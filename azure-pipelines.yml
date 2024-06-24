@@ -8,13 +8,13 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  dotnetVersion: '7.0.100' # Update this variable to the required .NET SDK version
 
 steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '6.0.x' # Correct format for .NET SDK version
-
+    version: '$(dotnetVersion)' # Installing the required SDK version
 
 - task: NuGetToolInstaller@1
 
@@ -29,7 +29,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-
 - task: DotNetCoreCLI@2
   displayName: 'Pack .NET Core projects'
   inputs:
@@ -37,13 +36,17 @@ steps:
     packagesToPack: '**/*.csproj'
     configuration: '$(buildConfiguration)'
     outputDir: '$(Build.ArtifactStagingDirectory)'
+    version: '$(dotnetVersion)' # Ensuring the correct SDK version
+
 - task: DotNetCoreCLI@2
+  displayName: 'Push .NET Core packages'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '8bbb8925-3f74-4d54-94b1-0bb357387c72/0fc5d124-ac17-41a5-99b3-bc17bb48a5af'
-
+    version: '$(dotnetVersion)'
+    versioningScheme: 'byBuildNumber'
 
 - task: VSTest@2
   inputs:
