@@ -13,7 +13,8 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '7.0.100' # Correct format for .NET SDK version
+    version: '6.0.x' # Correct format for .NET SDK version
+
 
 - task: NuGetToolInstaller@1
 
