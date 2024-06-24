@@ -28,6 +28,7 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+
 - task: DotNetCoreCLI@2
   displayName: 'Pack .NET Core projects'
   inputs:
@@ -35,15 +36,13 @@ steps:
     packagesToPack: '**/*.csproj'
     configuration: '$(buildConfiguration)'
     outputDir: '$(Build.ArtifactStagingDirectory)'
-
 - task: DotNetCoreCLI@2
-  displayName: 'Push .NET Core packages'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: '71168844-d5f1-4967-b562-03d477971258'
-    versioningScheme: 'byBuildNumber'
+    publishVstsFeed: '8bbb8925-3f74-4d54-94b1-0bb357387c72/0fc5d124-ac17-41a5-99b3-bc17bb48a5af'
+
 
 - task: VSTest@2
   inputs:
